@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TECHCORE — Premium Computer Setups</title>
+
+  <!-- ============================================================
+       FONTS — Change these Google Font links to swap typefaces
+       Current: "Orbitron" (headings) + "Share Tech Mono" (body)
+       ============================================================ -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet"/>
+
+  <style>
+    /* ============================================================
+       CSS VARIABLES — Edit these to retheme the entire site
+       ============================================================ */
+    :root {
+      --bg-primary:     #050810;       /* Main background */
+      --bg-secondary:   #0a0f1e;       /* Card / section background */
+      --bg-card:        #0d1528;       /* Product card background */
+      --accent-cyan:    #00f5ff;       /* Primary neon accent */
+      --accent-purple:  #9d4edd;       /* Secondary accent */
+      --accent-green:   #39ff14;       /* Price / CTA highlight */
+      --text-primary:   #e8f4fd;       /* Main body text */
+      --text-muted:     #5a7a9a;       /* Muted / secondary text */
+      --border-glow:    rgba(0,245,255,0.25); /* Card border */
+      --font-display:   'Orbitron', monospace;
+      --font-body:      'Share Tech Mono', monospace;
+      --font-ui:        'Rajdhani', sans-serif;
+    }
+
+    /* ============================================================
+       RESET & BASE
+       ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      overflow-x: hidden;
+      cursor: crosshair;
+    }
+
+    /* Scanline overlay texture */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,245,255,0.015) 2px,
+        rgba(0,245,255,0.015) 4px
+      );
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* ============================================================
+       REUSABLE GLOW TEXT
+       ============================================================ */
+    .glow {
+      text-shadow:
+        0 0 7px var(--accent-cyan),
+        0 0 20px var(--accent-cyan),
+        0 0 50px rgba(0,245,255,0.3);
+    }
+    .glow-purple {
+      text-shadow:
+        0 0 7px var(--accent-purple),
+        0 0 20px var(--accent-purple);
+    }
+
+    /* ============================================================
+       NAVIGATION
+       Edit: site name, nav links, CTA button label
+       ============================================================ */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 1000;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 4%;
+      background: rgba(5,8,16,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-glow);
+    }
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 1.4rem; font-weight: 900;
+      color: var(--accent-cyan);
+      letter-spacing: 4px;
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--accent-purple); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-family: var(--font-ui);
+      font-size: 0.9rem; letter-spacing: 2px;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--accent-cyan); }
+    .nav-cta {
+      background: transparent;
+      border: 1px solid var(--accent-cyan);
+      color: var(--accent-cyan);
+      padding: 0.5rem 1.5rem;
+      font-family: var(--font-display);
+      font-size: 0.75rem; letter-spacing: 2px;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-transform: uppercase;
+    }
+    .nav-cta:hover {
+      background: var(--accent-cyan);
+      color: var(--bg-primary);
+      box-shadow: 0 0 20px var(--accent-cyan);
+    }
+
+    /* ============================================================
+       HERO SECTION
+       Edit: headline, subheadline, button labels, badge text
+       ============================================================ */
+    .hero {
+      min-height: 100vh;
+      display: grid; grid-template-columns: 1fr 1fr;
+      align-items: center; gap: 4rem;
+      padding: 8rem 6% 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    /* Animated grid background */
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(0,245,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,245,255,0.04) 1px, transparent 1px);
+      background-size: 50px 50px;
+      animation: gridScroll 20s linear infinite;
+    }
+    @keyframes gridScroll {
+      0% { background-position: 0 0; }
+      100% { background-position: 50px 50px; }
+    }
+    .hero-content { position: relative; z-index: 2; }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(157,78,221,0.15);
+      border: 1px solid var(--accent-purple);
+      color: var(--accent-purple);
+      padding: 0.3rem 1rem;
+      font-size: 0.7rem; letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 900; line-height: 1.1;
+      margin-bottom: 1.5rem;
+    }
+    .hero h1 .line2 {
+      color: var(--accent-cyan);
+      display: block;
+    }
+    .hero-sub {
+      font-family: var(--font-ui);
+      font-size: 1.1rem; line-height: 1.7;
+      color: var(--text-muted);
+      margin-bottom: 2.5rem;
+      max-width: 480px;
+    }
+    .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--accent-cyan);
+      color: var(--bg-primary);
+      border: none; padding: 0.9rem 2.5rem;
+      font-family: var(--font-display);
+      font-size: 0.8rem; letter-spacing: 2px;
+      text-transform: uppercase; cursor: pointer;
+      transition: all 0.3s;
+      clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+    }
+    .btn-primary:hover {
+      box-shadow: 0 0 30px var(--accent-cyan), 0 0 60px rgba(0,245,255,0.3);
+      transform: translateY(-2px);
+    }
+    .btn-secondary {
+      background: transparent;
+      color: var(--text-primary);
+      border: 1px solid rgba(232,244,253,0.2);
+      padding: 0.9rem 2.5rem;
+      font-family: var(--font-display);
+      font-size: 0.8rem; letter-spacing: 2px;
+      text-transform: uppercase; cursor: pointer;
+      transition: all 0.3s;
+    }
+    .btn-secondary:hover {
+      border-color: var(--accent-cyan);
+      color: var(--accent-cyan);
+    }
+    /* Hero image panel */
+    .hero-visual { position: relative; z-index: 2; }
+    .hero-img-wrapper {
+      position: relative;
+      border: 1px solid var(--border-glow);
+      overflow: hidden;
+    }
+    .hero-img-wrapper::before {
+      content: '';
+      position: absolute; top: 0; left: 0;
+      right: 0; height: 3px;
+      background: linear-gradient(90deg, transparent, var(--accent-cyan), var(--accent-purple), transparent);
+      z-index: 3;
+    }
+    /* ============================================================
+       IMAGE — Replace the src URLs with your actual images.
+       Unsplash temp IDs are listed as comments for each image.
+       Format: https://images.unsplash.com/photo-{ID}?w=800&q=80
+       ============================================================ */
+    .hero-img-wrapper img {
+      width: 100%; display: block;
+      filter: saturate(1.2) contrast(1.05);
+      /* HERO IMAGE — Unsplash: gaming setup with monitors */
+      /* Replace ID below: 1714140630-ddb6b2d17a65 */
+    }
+    .hero-stats {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 1px; margin-top: 1px;
+      background: var(--border-glow);
+    }
+    .stat {
+      background: var(--bg-secondary);
+      padding: 1rem; text-align: center;
+    }
+    .stat-num {
+      font-family: var(--font-display);
+      font-size: 1.4rem; font-weight: 700;
+      color: var(--accent-cyan);
+    }
+    .stat-label {
+      font-size: 0.65rem; letter-spacing: 2px;
+      color: var(--text-muted); text-transform: uppercase;
+      font-family: var(--font-ui);
+    }
+
+    /* ============================================================
+       SECTION TITLES
+       ============================================================ */
+    .section-header {
+      text-align: center; margin-bottom: 4rem;
+    }
+    .section-tag {
+      display: inline-block;
+      font-size: 0.65rem; letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--accent-cyan); margin-bottom: 0.75rem;
+      font-family: var(--font-ui);
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 700; line-height: 1.2;
+    }
+    .section-title span { color: var(--accent-cyan); }
+
+    /* ============================================================
+       FEATURED PRODUCTS SECTION
+       Edit: section heading, each product card details below
+       ============================================================ */
+    .products { padding: 6rem 6%; background: var(--bg-secondary); }
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+    .product-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-glow);
+      position: relative; overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
+      clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%);
+    }
+    .product-card::after {
+      content: '';
+      position: absolute; top: 0; right: 0;
+      width: 20px; height: 20px;
+      background: var(--accent-cyan);
+      clip-path: polygon(100% 0, 0 0, 100% 100%);
+    }
+    .product-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 50px rgba(0,245,255,0.15), 0 0 0 1px var(--accent-cyan);
+    }
+    .product-badge {
+      position: absolute; top: 1rem; left: 1rem;
+      z-index: 2;
+      background: var(--accent-green);
+      color: var(--bg-primary);
+      font-family: var(--font-display);
+      font-size: 0.6rem; font-weight: 700;
+      padding: 0.25rem 0.75rem; letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    .product-img {
+      width: 100%; aspect-ratio: 16/10;
+      object-fit: cover;
+      filter: saturate(1.1);
+      transition: filter 0.3s;
+    }
+    .product-card:hover .product-img { filter: saturate(1.4) brightness(1.05); }
+    .product-info { padding: 1.5rem; }
+    .product-category {
+      font-size: 0.65rem; letter-spacing: 3px;
+      color: var(--accent-purple); text-transform: uppercase;
+      font-family: var(--font-ui); margin-bottom: 0.5rem;
+    }
+    .product-name {
+      font-family: var(--font-display);
+      font-size: 1rem; font-weight: 600;
+      margin-bottom: 0.5rem; line-height: 1.3;
+    }
+    .product-desc {
+      font-family: var(--font-ui);
+      font-size: 0.85rem; color: var(--text-muted);
+      line-height: 1.6; margin-bottom: 1.2rem;
+    }
+    .product-specs {
+      display: flex; flex-wrap: wrap; gap: 0.4rem;
+      margin-bottom: 1.2rem;
+    }
+    .spec-tag {
+      background: rgba(0,245,255,0.07);
+      border: 1px solid rgba(0,245,255,0.2);
+      color: var(--accent-cyan);
+      font-size: 0.65rem; padding: 0.2rem 0.6rem;
+      letter-spacing: 1px;
+    }
+    .product-footer {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(0,245,255,0.1);
+    }
+    .product-price {
+      font-family: var(--font-display);
+      font-size: 1.3rem; font-weight: 700;
+      color: var(--accent-green);
+    }
+    .product-price-old {
+      font-size: 0.8rem; color: var(--text-muted);
+      text-decoration: line-through; display: block;
+      margin-bottom: 0.1rem;
+    }
+    .btn-buy {
+      background: transparent;
+      border: 1px solid var(--accent-cyan);
+      color: var(--accent-cyan);
+      padding: 0.5rem 1.2rem;
+      font-family: var(--font-display);
+      font-size: 0.7rem; letter-spacing: 1px;
+      text-transform: uppercase; cursor: pointer;
+      transition: all 0.3s;
+    }
+    .btn-buy:hover {
+      background: var(--accent-cyan);
+      color: var(--bg-primary);
+      box-shadow: 0 0 15px var(--accent-cyan);
+    }
+
+    /* ============================================================
+       FEATURE HIGHLIGHTS
+       Edit: icon characters, titles, descriptions
+       ============================================================ */
+    .features { padding: 6rem 6%; }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1.5rem;
+    }
+    .feature-card {
+      border: 1px solid rgba(157,78,221,0.2);
+      padding: 2rem 1.5rem;
+      background: rgba(157,78,221,0.04);
+      transition: all 0.3s;
+      position: relative;
+    }
+    .feature-card::before {
+      content: '';
+      position: absolute; bottom: 0; left: 0;
+      width: 0; height: 2px;
+      background: var(--accent-purple);
+      transition: width 0.4s;
+    }
+    .feature-card:hover::before { width: 100%; }
+    .feature-icon {
+      font-size: 2rem; margin-bottom: 1rem;
+      display: block;
+    }
+    .feature-title {
+      font-family: var(--font-display);
+      font-size: 0.85rem; font-weight: 600;
+      letter-spacing: 1px; margin-bottom: 0.75rem;
+      color: var(--accent-purple);
+    }
+    .feature-desc {
+      font-family: var(--font-ui);
+      font-size: 0.9rem; color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* ============================================================
+       BUNDLE DEALS SECTION
+       Edit: bundle names, descriptions, included items, prices
+       ============================================================ */
+    .bundles { padding: 6rem 6%; background: var(--bg-secondary); }
+    .bundles-grid {
+      display: grid; grid-template-columns: 1fr 1.3fr 1fr;
+      gap: 1.5rem; align-items: start;
+    }
+    .bundle-card {
+      border: 1px solid var(--border-glow);
+      background: var(--bg-card);
+      padding: 2rem 1.5rem;
+      position: relative; text-align: center;
+      transition: all 0.3s;
+    }
+    .bundle-card.featured {
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 40px rgba(0,245,255,0.1);
+      transform: scale(1.03);
+    }
+    .bundle-label {
+      position: absolute; top: -12px; left: 50%;
+      transform: translateX(-50%);
+      background: var(--accent-cyan);
+      color: var(--bg-primary);
+      font-family: var(--font-display);
+      font-size: 0.6rem; font-weight: 700;
+      padding: 0.2rem 1rem; letter-spacing: 2px;
+      white-space: nowrap;
+    }
+    .bundle-name {
+      font-family: var(--font-display);
+      font-size: 1.1rem; font-weight: 700;
+      margin-bottom: 0.5rem; color: var(--text-primary);
+    }
+    .bundle-tagline {
+      font-family: var(--font-ui);
+      font-size: 0.85rem; color: var(--text-muted);
+      margin-bottom: 1.5rem;
+    }
+    .bundle-price {
+      font-family: var(--font-display);
+      font-size: 2.2rem; font-weight: 900;
+      color: var(--accent-cyan);
+      margin-bottom: 1.5rem;
+    }
+    .bundle-price sup { font-size: 1rem; }
+    .bundle-items {
+      list-style: none; margin-bottom: 2rem; text-align: left;
+    }
+    .bundle-items li {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid rgba(0,245,255,0.07);
+      font-family: var(--font-ui); font-size: 0.9rem;
+      color: var(--text-muted);
+      display: flex; gap: 0.75rem; align-items: center;
+    }
+    .bundle-items li::before { content: '▸'; color: var(--accent-cyan); }
+    .bundle-card .btn-primary, .bundle-card .btn-secondary { width: 100%; }
+
+    /* ============================================================
+       SHOWCASE / GALLERY
+       Edit: image IDs, overlay text
+       ============================================================ */
+    .showcase { padding: 6rem 6%; }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      grid-template-rows: 280px 280px;
+      gap: 1rem;
+    }
+    .gallery-item {
+      position: relative; overflow: hidden;
+      cursor: pointer;
+    }
+    .gallery-item:first-child { grid-row: span 2; }
+    .gallery-item img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s, filter 0.3s;
+      filter: saturate(0.8);
+    }
+    .gallery-item:hover img {
+      transform: scale(1.05);
+      filter: saturate(1.3);
+    }
+    .gallery-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(5,8,16,0.8) 0%, transparent 60%);
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .gallery-item:hover .gallery-overlay { opacity: 1; }
+    .gallery-tag {
+      position: absolute; bottom: 1rem; left: 1rem;
+      font-family: var(--font-display);
+      font-size: 0.75rem; color: var(--accent-cyan);
+      letter-spacing: 2px;
+    }
+
+    /* ============================================================
+       TESTIMONIALS
+       Edit: quotes, names, roles
+       ============================================================ */
+    .testimonials { padding: 6rem 6%; background: var(--bg-secondary); }
+    .testi-grid {
+      display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem;
+    }
+    .testi-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-glow);
+      padding: 2rem;
+    }
+    .testi-stars { color: var(--accent-cyan); font-size: 0.9rem; margin-bottom: 1rem; }
+    .testi-quote {
+      font-family: var(--font-ui);
+      font-size: 0.95rem; line-height: 1.7;
+      color: var(--text-primary); margin-bottom: 1.5rem;
+      font-style: italic;
+    }
+    .testi-author { display: flex; align-items: center; gap: 0.75rem; }
+    .testi-avatar {
+      width: 40px; height: 40px;
+      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-display); font-size: 0.8rem; font-weight: 700;
+      color: var(--bg-primary); flex-shrink: 0;
+    }
+    .testi-name {
+      font-family: var(--font-display); font-size: 0.8rem;
+      font-weight: 600; color: var(--accent-cyan);
+    }
+    .testi-role {
+      font-family: var(--font-ui); font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* ============================================================
+       NEWSLETTER / CTA BANNER
+       Edit: headline, input placeholder, button label
+       ============================================================ */
+    .cta-banner {
+      padding: 5rem 6%;
+      background: linear-gradient(135deg, rgba(0,245,255,0.05), rgba(157,78,221,0.05));
+      border-top: 1px solid var(--border-glow);
+      border-bottom: 1px solid var(--border-glow);
+      text-align: center;
+    }
+    .cta-banner h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3vw, 2.5rem);
+      margin-bottom: 1rem;
+    }
+    .cta-banner p {
+      font-family: var(--font-ui);
+      color: var(--text-muted); margin-bottom: 2rem;
+      font-size: 1rem;
+    }
+    .cta-form { display: flex; justify-content: center; gap: 0; max-width: 480px; margin: 0 auto; }
+    .cta-input {
+      flex: 1;
+      background: rgba(0,245,255,0.05);
+      border: 1px solid var(--border-glow);
+      border-right: none;
+      color: var(--text-primary);
+      padding: 0.85rem 1.2rem;
+      font-family: var(--font-body); font-size: 0.85rem;
+      outline: none;
+    }
+    .cta-input:focus { border-color: var(--accent-cyan); }
+    .cta-input::placeholder { color: var(--text-muted); }
+    .cta-submit {
+      background: var(--accent-cyan); border: none;
+      color: var(--bg-primary); padding: 0.85rem 1.8rem;
+      font-family: var(--font-display); font-size: 0.75rem;
+      letter-spacing: 2px; cursor: pointer;
+      text-transform: uppercase; transition: all 0.3s;
+    }
+    .cta-submit:hover { box-shadow: 0 0 20px var(--accent-cyan); }
+
+    /* ============================================================
+       FOOTER
+       Edit: logo text, columns, links, copyright
+       ============================================================ */
+    footer {
+      background: var(--bg-secondary);
+      padding: 4rem 6% 2rem;
+      border-top: 1px solid var(--border-glow);
+    }
+    .footer-grid {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3rem; margin-bottom: 3rem;
+    }
+    .footer-brand p {
+      font-family: var(--font-ui); color: var(--text-muted);
+      font-size: 0.9rem; line-height: 1.7; margin-top: 1rem;
+      max-width: 240px;
+    }
+    .footer-col h4 {
+      font-family: var(--font-display);
+      font-size: 0.75rem; letter-spacing: 2px;
+      color: var(--accent-cyan); margin-bottom: 1.2rem;
+      text-transform: uppercase;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col li { margin-bottom: 0.6rem; }
+    .footer-col a {
+      color: var(--text-muted); text-decoration: none;
+      font-family: var(--font-ui); font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+    .footer-col a:hover { color: var(--accent-cyan); }
+    .footer-bottom {
+      border-top: 1px solid rgba(0,245,255,0.1);
+      padding-top: 2rem;
+      display: flex; justify-content: space-between;
+      align-items: center;
+    }
+    .footer-bottom p {
+      font-family: var(--font-ui); font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    .footer-socials { display: flex; gap: 1rem; }
+    .social-btn {
+      width: 36px; height: 36px;
+      border: 1px solid var(--border-glow);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-muted); text-decoration: none;
+      font-size: 0.85rem; transition: all 0.3s;
+    }
+    .social-btn:hover {
+      border-color: var(--accent-cyan);
+      color: var(--accent-cyan);
+      box-shadow: 0 0 10px var(--accent-cyan);
+    }
+
+    /* Scroll reveal animation */
+    .reveal {
+      opacity: 0; transform: translateY(30px);
+      transition: opacity 0.6s, transform 0.6s;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ============================================================
+       RESPONSIVE — Breakpoints
+       ============================================================ */
+    @media (max-width: 1024px) {
+      .bundles-grid { grid-template-columns: 1fr; }
+      .bundle-card.featured { transform: none; }
+    }
+    @media (max-width: 768px) {
+      .hero { grid-template-columns: 1fr; padding-top: 6rem; }
+      .hero-visual { display: none; }
+      .nav-links { display: none; }
+      .gallery-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+      .gallery-item:first-child { grid-row: auto; grid-column: span 2; }
+      .testi-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========== NAVIGATION ========== -->
+  <nav>
+    <!-- EDIT: Change "TECH" and "CORE" to your brand name -->
+    <a href="#" class="nav-logo">TECH<span>CORE</span></a>
+    <ul class="nav-links">
+      <!-- EDIT: Change nav link labels and href targets -->
+      <li><a href="#products">Products</a></li>
+      <li><a href="#bundles">Bundles</a></li>
+      <li><a href="#showcase">Gallery</a></li>
+      <li><a href="#testimonials">Reviews</a></li>
+    </ul>
+    <!-- EDIT: Change CTA button label -->
+    <button class="nav-cta">Build My Setup</button>
+  </nav>
+
+
+  <!-- ========== HERO ========== -->
+  <section class="hero">
+    <div class="hero-content">
+      <!-- EDIT: Change badge text -->
+      <div class="hero-badge">⚡ New 2025 Lineup Available</div>
+
+      <!-- EDIT: Change headline -->
+      <h1 class="glow">
+        DOMINATE
+        <span class="line2">YOUR WORKSPACE</span>
+      </h1>
+
+      <!-- EDIT: Change subheadline description -->
+      <p class="hero-sub">
+        Ultra-precision computer setups engineered for creators, gamers,
+        and professionals who refuse to compromise. Built to the limit.
+      </p>
+
+      <div class="hero-btns">
+        <!-- EDIT: Change button labels -->
+        <button class="btn-primary">Shop Now</button>
+        <button class="btn-secondary">View Builds</button>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="hero-img-wrapper">
+        <!-- ============================================================
+             HERO IMAGE
+             Replace the URL below with your image.
+             Temp Unsplash image: gaming/desk setup
+             Photo ID: 1714140630-ddb6b2d17a65
+             Full URL: https://images.unsplash.com/photo-1714140630-ddb6b2d17a65?w=800&q=80
+             ============================================================ -->
+        <img
+          src="https://i.imgur.com/JjzTtyq.jpg"
+          alt="Premium computer setup"
+        />
+      </div>
+      <!-- EDIT: Change stat numbers and labels -->
+      <div class="hero-stats">
+        <div class="stat">
+          <div class="stat-num glow">4K+</div>
+          <div class="stat-label">Setups Built</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num glow">99.8%</div>
+          <div class="stat-label">Satisfaction</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num glow">3YR</div>
+          <div class="stat-label">Warranty</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ========== FEATURED PRODUCTS ========== -->
+  <section class="products" id="products">
+    <div class="section-header reveal">
+      <!-- EDIT: Change section label and title -->
+      <div class="section-tag">// Featured Builds</div>
+      <h2 class="section-title">HANDPICKED <span>SETUPS</span></h2>
+    </div>
+
+    <div class="products-grid">
+
+      <!-- ======================================================
+           PRODUCT CARD 1 — Edit all fields below
+           ====================================================== -->
+      <div class="product-card reveal">
+        <div class="product-badge">HOT</div>
+        <!-- PRODUCT IMAGE 1
+             Unsplash Photo ID: 1593640408182-31c4e0a74f7e (gaming RGB setup)
+             Replace URL below with your product image -->
+        <img
+          class="product-img"
+          src="https://i.imgur.com/L6X8yHr.jpg"
+          alt="Gaming Setup Pro"
+        />
+        <div class="product-info">
+          <!-- EDIT: category, name, description, specs, price -->
+          <div class="product-category">Gaming Build</div>
+          <h3 class="product-name">PHANTOM RIG X1</h3>
+          <p class="product-desc">
+            Full RGB gaming battlestation with 165Hz display, mechanical keyboard,
+            and surround-sound headset. Ready to play out-of-box.
+          </p>
+          <div class="product-specs">
+            <!-- EDIT: add/remove spec tags -->
+            <span class="spec-tag">RTX 4080</span>
+            <span class="spec-tag">i9-14900K</span>
+            <span class="spec-tag">32GB DDR5</span>
+            <span class="spec-tag">2TB NVMe</span>
+          </div>
+          <div class="product-footer">
+            <div>
+              <!-- EDIT: old price (strikethrough) and new price -->
+              <div class="product-price-old">₱149,999</div>
+              <div class="product-price">₱129,999</div>
+            </div>
+            <button class="btn-buy">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ======================================================
+           PRODUCT CARD 2 — Edit all fields below
+           ====================================================== -->
+      <div class="product-card reveal">
+        <!-- PRODUCT IMAGE 2
+             Unsplash Photo ID: 1547394765-185e1e68f34e (minimal desk setup)
+             Replace URL below with your product image -->
+        <img
+          class="product-img"
+          src="https://i.imgur.com/u1opb7D.jpg"
+          alt="Creator Studio Setup"
+        />
+        <div class="product-info">
+          <div class="product-category">Creator Studio</div>
+          <h3 class="product-name">NEXUS CREATOR PRO</h3>
+          <p class="product-desc">
+            Optimized for video editors and 3D artists. Dual 4K displays,
+            color-accurate panels, and whisper-quiet cooling system.
+          </p>
+          <div class="product-specs">
+            <span class="spec-tag">RTX 4090</span>
+            <span class="spec-tag">Ryzen 9 7950X</span>
+            <span class="spec-tag">64GB RAM</span>
+            <span class="spec-tag">4TB SSD</span>
+          </div>
+          <div class="product-footer">
+            <div>
+              <div class="product-price">₱219,999</div>
+            </div>
+            <button class="btn-buy">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ======================================================
+           PRODUCT CARD 3 — Edit all fields below
+           ====================================================== -->
+      <div class="product-card reveal">
+        <div class="product-badge" style="background: var(--accent-purple); color: #fff;">NEW</div>
+        <!-- PRODUCT IMAGE 3
+             Unsplash Photo ID: 1616763355603-9755a912b8ca (office/work setup)
+             Replace URL below with your product image -->
+        <img
+          class="product-img"
+          src="https://i.imgur.com/fJersW5.jpg"
+          alt="Office Pro Setup"
+        />
+        <div class="product-info">
+          <div class="product-category">Office Workstation</div>
+          <h3 class="product-name">APEX OFFICE ELITE</h3>
+          <p class="product-desc">
+            Productivity-first workstation with ultra-wide display, ergonomic
+            peripherals, and silent case fans. Built for long sessions.
+          </p>
+          <div class="product-specs">
+            <span class="spec-tag">i7-14700</span>
+            <span class="spec-tag">Arc A770</span>
+            <span class="spec-tag">16GB DDR5</span>
+            <span class="spec-tag">1TB NVMe</span>
+          </div>
+          <div class="product-footer">
+            <div>
+              <div class="product-price-old">₱89,999</div>
+              <div class="product-price">₱74,999</div>
+            </div>
+            <button class="btn-buy">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ======================================================
+           PRODUCT CARD 4 — Edit all fields below
+           ====================================================== -->
+      <div class="product-card reveal">
+        <!-- PRODUCT IMAGE 4
+             Unsplash Photo ID: 1587831990711-23ca6441447b (compact/mini PC setup)
+             Replace URL below with your product image -->
+        <img
+          class="product-img"
+          src="https://i.imgur.com/et5vwkQ.jpg"
+          alt="Compact Setup"
+        />
+        <div class="product-info">
+          <div class="product-category">Compact Build</div>
+          <h3 class="product-name">MICRO STEALTH ITX</h3>
+          <p class="product-desc">
+            Small form factor with big performance. Perfect for tight spaces
+            without sacrificing power. Portable and sleek.
+          </p>
+          <div class="product-specs">
+            <span class="spec-tag">RTX 4070</span>
+            <span class="spec-tag">i5-14600K</span>
+            <span class="spec-tag">16GB DDR5</span>
+            <span class="spec-tag">1TB SSD</span>
+          </div>
+          <div class="product-footer">
+            <div>
+              <div class="product-price">₱89,999</div>
+            </div>
+            <button class="btn-buy">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /products-grid -->
+  </section>
+
+
+  <!-- ========== FEATURE HIGHLIGHTS ========== -->
+  <section class="features">
+    <div class="section-header reveal">
+      <div class="section-tag">// Why TechCore</div>
+      <h2 class="section-title">BUILT FOR THE <span>BEST</span></h2>
+    </div>
+    <div class="features-grid">
+      <!-- EDIT: icon (emoji), title, description for each feature card -->
+      <div class="feature-card reveal">
+        <span class="feature-icon">⚡</span>
+        <div class="feature-title">Lightning Fast Builds</div>
+        <p class="feature-desc">Every component tested and optimized. Arrives benchmarked and ready to perform from the first boot.</p>
+      </div>
+      <div class="feature-card reveal">
+        <span class="feature-icon">🛡️</span>
+        <div class="feature-title">3-Year Warranty</div>
+        <p class="feature-desc">Full coverage on all parts and labor. Our tech team is available 24/7 for remote diagnostics.</p>
+      </div>
+      <div class="feature-card reveal">
+        <span class="feature-icon">🔧</span>
+        <div class="feature-title">Custom Configuration</div>
+        <p class="feature-desc">Every build tailored to your workflow. Our engineers match specs to your exact needs and budget.</p>
+      </div>
+      <div class="feature-card reveal">
+        <span class="feature-icon">🚀</span>
+        <div class="feature-title">Express Delivery</div>
+        <p class="feature-desc">2-5 day delivery with white-glove setup service available in Metro Manila and key cities.</p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ========== BUNDLE DEALS ========== -->
+  <section class="bundles" id="bundles">
+    <div class="section-header reveal">
+      <div class="section-tag">// Bundle Deals</div>
+      <h2 class="section-title">CHOOSE YOUR <span>TIER</span></h2>
+    </div>
+    <div class="bundles-grid">
+
+      <!-- EDIT: Starter bundle name, tagline, price, included items -->
+      <div class="bundle-card reveal">
+        <div class="bundle-name">STARTER</div>
+        <div class="bundle-tagline">For the everyday user</div>
+        <div class="bundle-price"><sup>₱</sup>39,999</div>
+        <ul class="bundle-items">
+          <!-- EDIT: change or add bundle items -->
+          <li>Mid-Tower ATX Case</li>
+          <li>Intel Core i5 + 16GB RAM</li>
+          <li>GTX 1660 Super</li>
+          <li>512GB NVMe SSD</li>
+          <li>24" 1080p Monitor</li>
+          <li>Keyboard + Mouse Combo</li>
+        </ul>
+        <button class="btn-secondary">Choose Starter</button>
+      </div>
+
+      <!-- EDIT: Pro bundle — featured (most popular) -->
+      <div class="bundle-card featured reveal">
+        <div class="bundle-label">MOST POPULAR</div>
+        <div class="bundle-name">PHANTOM PRO</div>
+        <div class="bundle-tagline">The ultimate all-rounder</div>
+        <div class="bundle-price"><sup>₱</sup>129,999</div>
+        <ul class="bundle-items">
+          <li>Premium RGB ATX Case</li>
+          <li>Intel i9-14900K + 32GB DDR5</li>
+          <li>NVIDIA RTX 4080</li>
+          <li>2TB NVMe + 2TB HDD</li>
+          <li>27" 165Hz QHD Display</li>
+          <li>Mech Keyboard + Gaming Mouse</li>
+          <li>7.1 Surround Headset</li>
+          <li>Webcam 4K + Capture Card</li>
+        </ul>
+        <button class="btn-primary">Choose Phantom Pro</button>
+      </div>
+
+      <!-- EDIT: Studio bundle -->
+      <div class="bundle-card reveal">
+        <div class="bundle-name">STUDIO MAX</div>
+        <div class="bundle-tagline">Built for creators</div>
+        <div class="bundle-price"><sup>₱</sup>219,999</div>
+        <ul class="bundle-items">
+          <li>Full-Tower Tempered Case</li>
+          <li>AMD Ryzen 9 7950X + 64GB</li>
+          <li>NVIDIA RTX 4090</li>
+          <li>4TB NVMe RAID Setup</li>
+          <li>Dual 4K Color-Accurate Displays</li>
+          <li>Stream Deck + MIDI Pad</li>
+          <li>Pro XLR Mic + Boom Arm</li>
+        </ul>
+        <button class="btn-secondary">Choose Studio Max</button>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ========== SHOWCASE GALLERY ========== -->
+  <section class="showcase" id="showcase">
+    <div class="section-header reveal">
+      <div class="section-tag">// Setup Gallery</div>
+      <h2 class="section-title">REAL BUILDS, <span>REAL SPACES</span></h2>
+    </div>
+    <div class="gallery-grid reveal">
+
+      <!-- GALLERY IMAGE 1 (large, spans 2 rows)
+           Unsplash Photo ID: 1612791818767-2bb72c8d6d4c (gaming room RGB)
+           Replace URL with your gallery image -->
+      <div class="gallery-item">
+        <img src="https://i.imgur.com/L239XWd.jpg" alt="Gaming Room Setup"/>
+        <div class="gallery-overlay"></div>
+        <div class="gallery-tag">GAMING DEN</div>
+      </div>
+
+      <!-- GALLERY IMAGE 2
+           Unsplash Photo ID: 1551808525-99a4f663c6ef (minimal white desk)
+           Replace URL with your gallery image -->
+      <div class="gallery-item">
+        <img src="https://i.imgur.com/EonJWkS.jpg" alt="Minimal Desk"/>
+        <div class="gallery-overlay"></div>
+        <div class="gallery-tag">MINIMAL</div>
+      </div>
+
+      <!-- GALLERY IMAGE 3
+           Unsplash Photo ID: 1565774597-8cad0c1f9b22 (dual monitor setup)
+           Replace URL with your gallery image -->
+      <div class="gallery-item">
+        <img src="https://i.imgur.com/lP6QAzk.jpg" alt="Dual Monitor Setup"/>
+        <div class="gallery-overlay"></div>
+        <div class="gallery-tag">DUAL MONITOR</div>
+      </div>
+
+      <!-- GALLERY IMAGE 4
+           Unsplash Photo ID: 1542831371-29b0f74f9713 (code on screen)
+           Replace URL with your gallery image -->
+      <div class="gallery-item">
+        <img src="https://i.imgur.com/MHvxlXf.jpg" alt="Developer Workstation"/>
+        <div class="gallery-overlay"></div>
+        <div class="gallery-tag">DEV STATION</div>
+      </div>
+
+      <!-- GALLERY IMAGE 5
+           Unsplash Photo ID: 1526374965328-7f61d4dc18c5 (matrix code)
+           Replace URL with your gallery image -->
+      <div class="gallery-item">
+        <img src="https://i.imgur.com/GHw8y9v.jpg" alt="Tech Environment"/>
+        <div class="gallery-overlay"></div>
+        <div class="gallery-tag">TECH VIBES</div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ========== TESTIMONIALS ========== -->
+  <section class="testimonials" id="testimonials">
+    <div class="section-header reveal">
+      <div class="section-tag">// Customer Reviews</div>
+      <h2 class="section-title">TRUSTED BY <span>THOUSANDS</span></h2>
+    </div>
+    <div class="testi-grid">
+
+      <!-- EDIT: Change each testimonial quote, name, role, and avatar initials -->
+      <div class="testi-card reveal">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">"Ordered the Phantom Pro bundle and it arrived in 3 days fully assembled and tested. Runs every game at max settings. Absolutely insane value."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">AJ</div>
+          <div>
+            <div class="testi-name">ANGELO J.</div>
+            <div class="testi-role">Competitive Gamer, Cebu</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi-card reveal">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">"The Studio Max changed my workflow completely. Rendering times dropped by 60%. The dual 4K monitors are color-perfect right out of the box."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">MC</div>
+          <div>
+            <div class="testi-name">MIGUEL C.</div>
+            <div class="testi-role">Video Editor, Manila</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi-card reveal">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">"TechCore's customer support is next level. Had a minor issue with my RAM and they had a replacement at my door the next morning. Never seen that before."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">SR</div>
+          <div>
+            <div class="testi-name">SARAH R.</div>
+            <div class="testi-role">Software Developer, QC</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ========== CTA BANNER ========== -->
+  <section class="cta-banner">
+    <!-- EDIT: Change headline, paragraph, placeholder, button label -->
+    <h2 class="glow-purple">GET EXCLUSIVE DEALS <span style="color:var(--accent-cyan)">FIRST</span></h2>
+    <p>Join 12,000+ tech enthusiasts. No spam — just drops, discounts, and new builds.</p>
+    <div class="cta-form">
+      <input type="email" class="cta-input" placeholder="your@email.com"/>
+      <button class="cta-submit">Subscribe</button>
+    </div>
+  </section>
+
+
+  <!-- ========== FOOTER ========== -->
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <!-- EDIT: Footer logo and brand description -->
+        <a href="#" class="nav-logo" style="font-size:1.2rem;">TECH<span>CORE</span></a>
+        <p>Premium computer setups for gamers, creators, and professionals. Engineered to the limit.</p>
+      </div>
+
+      <!-- EDIT: Footer columns — change headings and links -->
+      <div class="footer-col">
+        <h4>Products</h4>
+        <ul>
+          <li><a href="#">Gaming Setups</a></li>
+          <li><a href="#">Creator Builds</a></li>
+          <li><a href="#">Office Workstations</a></li>
+          <li><a href="#">Compact ITX</a></li>
+          <li><a href="#">Peripherals</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="#">Track Order</a></li>
+          <li><a href="#">Warranty Claims</a></li>
+          <li><a href="#">Setup Guide</a></li>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">FAQ</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">About TechCore</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Partners</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <!-- EDIT: Copyright year and brand name -->
+      <p>© 2025 TECHCORE. All rights reserved. Built with precision.</p>
+      <div class="footer-socials">
+        <!-- EDIT: Change href to your actual social links -->
+        <a href="#" class="social-btn" title="Facebook">f</a>
+        <a href="#" class="social-btn" title="Twitter/X">𝕏</a>
+        <a href="#" class="social-btn" title="Instagram">ig</a>
+        <a href="#" class="social-btn" title="Discord">dc</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============================================================
+       JAVASCRIPT — Scroll reveal animation
+       No edits needed here unless you want to adjust timing
+       ============================================================ -->
+  <script>
+    const reveals = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver(entries => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('visible'), i * 80);
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => io.observe(el));
+  </script>
+
+</body>
+</html>
